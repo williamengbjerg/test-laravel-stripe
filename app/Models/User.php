@@ -8,6 +8,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Cashier\Billable;
 
+/**
+ * Class User
+ *
+ * @package App\Models
+ */
 class User extends Authenticatable
 {
     use HasFactory;
@@ -43,4 +48,15 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * The tax rates that should apply to the customer's subscriptions.
+     *
+     * @return array
+     */
+    public function taxRates(): array
+    {
+        return ['txr_1IHsoeAt19ot019UMuO3nKc5'];
+    }
+
 }

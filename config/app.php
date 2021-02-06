@@ -17,6 +17,20 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Stripe info
+    |--------------------------------------------------------------------------
+    |
+    | This value is the name of your application. This value is used when the
+    | framework needs to place the application's name in a notification or
+    | any other location as required by the application or its packages.
+    |
+    */
+
+    'STRIPE_SECRET' => env('STRIPE_SECRET', 'pk_test_H4pUOU0Qi58JxwqvkoV65D43009hCaU1Dd'), // default test
+    'STRIPE_KEY' => env('STRIPE_KEY', 'sk_test_8EcACRkw2o0Jdd0M9u5TUMBc00ReFHl24Y'), // default test
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Environment
     |--------------------------------------------------------------------------
     |

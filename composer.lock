@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9cd040b300485794baa64967ff7bd841",
+    "content-hash": "68bbe2c83d373b6619682e66d04ccd7c",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -117,6 +117,52 @@
                 }
             ],
             "time": "2021-01-20T22:51:39+00:00"
+        },
+        {
+            "name": "calebporzio/laravel-helpers-file",
+            "version": "v0.1.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/calebporzio/laravel-helpers-file.git",
+                "reference": "a871a58e69951a825f87de3acf79e4586a0b83b1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/calebporzio/laravel-helpers-file/zipball/a871a58e69951a825f87de3acf79e4586a0b83b1",
+                "reference": "a871a58e69951a825f87de3acf79e4586a0b83b1",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": "^5.7|^5.8|^6.0|^7.0|^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "CalebPorzio\\LaravelHelpersFile\\ServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "CalebPorzio\\LaravelHelpersFile\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Caleb Porzio"
+                }
+            ],
+            "description": "Because I can never remember exactly how to autoload my helpers.php file",
+            "support": {
+                "issues": "https://github.com/calebporzio/laravel-helpers-file/issues",
+                "source": "https://github.com/calebporzio/laravel-helpers-file/tree/master"
+            },
+            "time": "2020-09-08T20:13:11+00:00"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
