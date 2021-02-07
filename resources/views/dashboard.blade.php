@@ -44,10 +44,10 @@
                                 @forelse($plans as $key => $plan)
                                     <li >
                                         <div class="border-red-500">
-                                            <div class="border-gray-200 relative border @if($loop->first) rounded-tl-md rounded-tr-md @endif @if($loop->last) rounded-bl-md rounded-br-md @endif p-4 flex flex-col md:pl-4 md:pr-6 md:grid md:grid-cols-3">
+                                            <div onclick="planName('{{ $plan->id }}');" class="border-gray-200 relative border @if($loop->first) rounded-tl-md rounded-tr-md @endif @if($loop->last) rounded-bl-md rounded-br-md @endif p-4 flex flex-col md:pl-4 md:pr-6 md:grid md:grid-cols-3">
                                                 <label class="flex items-center text-sm cursor-pointer">
-                                                    <input name="pricing_plan" type="radio" value="{{ $plan->id }}" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 cursor-pointer border-gray-300" @if($loop->first) checked @endif >
-                                                    <input type="hidden" name="plan_name" value="{{ Str::slug($plan->product->name) }}">
+                                                    <input name="pricing_plan" id="pricing_plan-{{ $plan->id }}" type="radio" value="{{ $plan->id }}" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 cursor-pointer border-gray-300" @if($loop->first) checked @endif >
+                                                    <input type="hidden" name="plan_name-{{ $plan->id }}" id="plan_name-{{ $plan->id }}" value="{{ Str::slug($plan->product->name) }}">
                                                     <span class="ml-3 font-medium text-gray-900 font-bold">
                                                         {{ $plan->product->name }}
                                                     </span>
@@ -79,6 +79,7 @@
                                 <div id="card-errors" role="alert"></div>
                             </div>
 
+                            <input id="setPlanName" name="planName" type="hidden" value="monthly">
                             <input id="card-holder-name" type="hidden" value="{{ $user->name }}">
 
                             <div class="stripe-errors"></div>
@@ -104,67 +105,82 @@
         </div>
     </div>
 
-    <script src="https://js.stripe.com/v3/"></script>
-    <script>
-        let stripe = Stripe('{{ config('app.STRIPE_KEY') }}');
-        var elements = stripe.elements();
-        var style = {
-            base: {
-                color: '#32325d',
-                fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-                fontSmoothing: 'antialiased',
-                fontSize: '16px',
-                '::placeholder': {
-                    color: '#aab7c4'
+    @if ($user->subscriptions()->first() === null)
+
+        <script>
+            function planName(id) {
+                const radioCheckbox = document.getElementById("pricing_plan-" + id);
+                const getPlanName   = document.getElementById("plan_name-" + id);
+                const setPlanName   = document.getElementById("setPlanName");
+
+                if (radioCheckbox.checked === true){
+                    setPlanName.value = getPlanName.value;
                 }
-            },
-            invalid: {
-                color: '#fa755a',
-                iconColor: '#fa755a'
             }
-        };
-        var card = elements.create('card', {
-            hidePostalCode: true,
-            style: style
-        });
-        card.mount('#card-element');
-        card.addEventListener('change', function(event) {
-            var displayError = document.getElementById('card-errors');
-            if (event.error) {
-                displayError.textContent = event.error.message;
-            } else {
-                displayError.textContent = '';
-            }
-        });
-        const cardHolderName = document.getElementById('card-holder-name');
-        const cardButton = document.getElementById('card-button');
-        const clientSecret = cardButton.dataset.secret;
-        cardButton.addEventListener('click', async (e) => {
-            console.log("attempting subscription");
-            const { setupIntent, error } = await stripe.confirmCardSetup(
-                clientSecret, {
-                    payment_method: {
-                        card: card,
-                        billing_details: { name: cardHolderName.value }
+        </script>
+
+        <script src="https://js.stripe.com/v3/"></script>
+        <script>
+            let stripe = Stripe('{{ config('app.STRIPE_KEY') }}');
+            var elements = stripe.elements();
+            var style = {
+                base: {
+                    color: '#32325d',
+                    fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+                    fontSmoothing: 'antialiased',
+                    fontSize: '16px',
+                    '::placeholder': {
+                        color: '#aab7c4'
                     }
+                },
+                invalid: {
+                    color: '#fa755a',
+                    iconColor: '#fa755a'
                 }
-            );
-            if (error) {
-                var errorElement = document.getElementById('card-errors');
-                errorElement.textContent = error.message;
-            } else {
-                paymentMethodHandler(setupIntent.payment_method);
+            };
+            var card = elements.create('card', {
+                hidePostalCode: true,
+                style: style
+            });
+            card.mount('#card-element');
+            card.addEventListener('change', function(event) {
+                var displayError = document.getElementById('card-errors');
+                if (event.error) {
+                    displayError.textContent = event.error.message;
+                } else {
+                    displayError.textContent = '';
+                }
+            });
+            const cardHolderName = document.getElementById('card-holder-name');
+            const cardButton = document.getElementById('card-button');
+            const clientSecret = cardButton.dataset.secret;
+            cardButton.addEventListener('click', async (e) => {
+                console.log("attempting subscription");
+                const { setupIntent, error } = await stripe.confirmCardSetup(
+                    clientSecret, {
+                        payment_method: {
+                            card: card,
+                            billing_details: { name: cardHolderName.value }
+                        }
+                    }
+                );
+                if (error) {
+                    var errorElement = document.getElementById('card-errors');
+                    errorElement.textContent = error.message;
+                } else {
+                    paymentMethodHandler(setupIntent.payment_method);
+                }
+            });
+            function paymentMethodHandler(payment_method) {
+                var form = document.getElementById('subscribe-form');
+                var hiddenInput = document.createElement('input');
+                hiddenInput.setAttribute('type', 'hidden');
+                hiddenInput.setAttribute('name', 'payment_method');
+                hiddenInput.setAttribute('value', payment_method);
+                form.appendChild(hiddenInput);
+                form.submit();
             }
-        });
-        function paymentMethodHandler(payment_method) {
-            var form = document.getElementById('subscribe-form');
-            var hiddenInput = document.createElement('input');
-            hiddenInput.setAttribute('type', 'hidden');
-            hiddenInput.setAttribute('name', 'payment_method');
-            hiddenInput.setAttribute('value', payment_method);
-            form.appendChild(hiddenInput);
-            form.submit();
-        }
-    </script>
+        </script>
+    @endif
 
 </x-app-layout>

@@ -71,7 +71,7 @@ class StripeSubscriptionController extends Controller
         $user = Auth::user();
 
         $paymentMethod  = $subscribeToStripePlan->input('payment_method');
-        $planName       = $subscribeToStripePlan->input('plan_name');
+        $planName       = $subscribeToStripePlan->input('planName');
         $plan           = $subscribeToStripePlan->input('pricing_plan');
 
         $user->createOrGetStripeCustomer();

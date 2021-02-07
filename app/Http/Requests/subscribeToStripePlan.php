@@ -25,7 +25,7 @@ class subscribeToStripePlan extends FormRequest
     {
         return [
             'payment_method' => 'required',
-            'plan_name'      => 'required',
+            'planName'       => 'required',
             'pricing_plan'   => 'required',
         ];
     }
