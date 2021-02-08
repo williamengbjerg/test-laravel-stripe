@@ -47,11 +47,11 @@
                                             <div onclick="planName('{{ $plan->id }}');" class="border-gray-200 relative border @if($loop->first) rounded-tl-md rounded-tr-md @endif @if($loop->last) rounded-bl-md rounded-br-md @endif p-4 flex flex-col md:pl-4 md:pr-6 md:grid md:grid-cols-3">
                                                 <label class="flex items-center text-sm cursor-pointer">
                                                     <input name="pricing_plan" id="pricing_plan-{{ $plan->id }}" type="radio" value="{{ $plan->id }}" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 cursor-pointer border-gray-300" @if($loop->first) checked @endif >
-                                                    <input type="hidden" name="plan_name-{{ $plan->id }}" id="plan_name-{{ $plan->id }}" value="{{ Str::slug($plan->product->name) }}">
                                                     <span class="ml-3 font-medium text-gray-900 font-bold">
                                                         {{ $plan->product->name }}
                                                     </span>
                                                 </label>
+                                                <input type="hidden" name="plan_name-{{ $plan->id }}" id="plan_name-{{ $plan->id }}" value="{{ Str::slug($plan->product->name) }}">
                                                 <p id="plan-option-pricing-{{ $key }}" class="ml-6 pl-1 text-sm md:ml-0 md:pl-0 md:text-center">
                                                     <span class="font-medium text-gray-900">
                                                         {{ \App\helpers::planAmount($plan->amount) }} {{ strtoupper($plan->currency) }}
