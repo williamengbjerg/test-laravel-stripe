@@ -105,7 +105,6 @@
         </div>
     </div>
 
-    @if ($user->subscriptions()->first() === null)
 
         <script>
             function planName(id) {
@@ -159,15 +158,22 @@
                     clientSecret, {
                         payment_method: {
                             card: card,
-                            billing_details: { name: cardHolderName.value }
+                            billing_details: {
+                                name: cardHolderName.value
+                            }
                         }
                     }
                 );
                 if (error) {
-                    var errorElement = document.getElementById('card-errors');
+                    const errorElement = document.getElementById('card-errors');
                     errorElement.textContent = error.message;
                 } else {
-                    paymentMethodHandler(setupIntent.payment_method);
+                    paymentMethodHandler(setupIntent.payment_method).then(function(result) {
+                        // Handle result.error or result.setupIntent
+                        console.log(result.error);
+                        console.log('');
+                        console.log(result.setupIntent);
+                    });
                 }
             });
             function paymentMethodHandler(payment_method) {
@@ -180,6 +186,5 @@
                 form.submit();
             }
         </script>
-    @endif
 
 </x-app-layout>
