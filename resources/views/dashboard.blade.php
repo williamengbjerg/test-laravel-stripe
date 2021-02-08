@@ -46,7 +46,7 @@
                                         <div class="border-red-500">
                                             <div onclick="planName('{{ $plan->id }}');" class="border-gray-200 relative border @if($loop->first) rounded-tl-md rounded-tr-md @endif @if($loop->last) rounded-bl-md rounded-br-md @endif p-4 flex flex-col md:pl-4 md:pr-6 md:grid md:grid-cols-3">
                                                 <label class="flex items-center text-sm cursor-pointer">
-                                                    <input name="pricing_plan" id="pricing_plan-{{ $plan->id }}" type="radio" value="{{ $plan->id }}" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 cursor-pointer border-gray-300" @if($loop->first) checked @endif >
+                                                    <input name="pricing_plan" id="pricing_plan-{{ $plan->id }}" type="radio" value="{{ $plan->id }}" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 cursor-pointer border-gray-300">
                                                     <span class="ml-3 font-medium text-gray-900 font-bold">
                                                         {{ $plan->product->name }}
                                                     </span>
