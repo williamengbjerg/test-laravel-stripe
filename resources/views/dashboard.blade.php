@@ -119,7 +119,6 @@
             }
         </script>
 
-        <script src="https://js.stripe.com/v3/"></script>
         <script>
             let stripe = Stripe('{{ config('app.STRIPE_KEY') }}');
             var elements = stripe.elements();
